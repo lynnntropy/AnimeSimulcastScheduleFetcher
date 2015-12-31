@@ -4,14 +4,13 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class FunimationProviderTest
+public class SenpaiProviderTest
 {
-
     @Test
     public void testGetItems() throws Exception
     {
-        FunimationProvider funimationProvider = new FunimationProvider();
-        List<ScheduleItem> items = funimationProvider.getItems();
+        SenpaiProvider senpaiProvider = new SenpaiProvider();
+        List<ScheduleItem> items = senpaiProvider.getItems();
 
         assertNotNull(items);
         assertTrue(items.size() > 0);
