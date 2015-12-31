@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AnimeSimulcastFetcher.iml" filepath="$PROJECT_DIR$/AnimeSimulcastFetcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AnimeSimulcastScheduleFetcher.iml" filepath="$PROJECT_DIR$/AnimeSimulcastScheduleFetcher.iml" />
     </modules>
   </component>
 </project>
