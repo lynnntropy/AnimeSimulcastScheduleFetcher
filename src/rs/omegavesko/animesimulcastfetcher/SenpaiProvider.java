@@ -1,3 +1,5 @@
+package rs.omegavesko.animesimulcastfetcher;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -6,6 +8,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,41 +18,54 @@ public class SenpaiProvider extends PageDownloader implements ScheduleProvider
 
     private List<ScheduleItem> scheduleItems = new ArrayList<ScheduleItem>();
 
+    private static List<ScheduleItem> cachedSchedule = null;
+    private static LocalTime cacheTime = null;
+
     @Override
     public List<ScheduleItem> getItems()
     {
-        Document page = this.downloadDocument(this.URL);
-
-        Elements itemRows = page.select("table#series > tbody > tr.series_instance");
-
-        for (Element item : itemRows)
+        if (cachedSchedule != null &&
+            ChronoUnit.MINUTES.between(cacheTime, LocalTime.now()) < 60)
         {
-            String name = item.select("span.seriesTitle").text().trim();
-            String id = item.attr("data-malid");
-
-            String weekday = item.select("td.weekday").text().trim();
-            DayOfWeek dayOfWeek = this.dayAbbrToEnum(weekday);
-
-            String timeString = item.select("td.time").text().trim();
-
-            LocalTime time;
-
-            try
-            {
-                time = LocalTime.of(
-                        Integer.parseInt(timeString.split(":")[0]),
-                        Integer.parseInt(timeString.split(":")[1])
-                );
-            }
-            catch (NumberFormatException e)
-            {
-                break;
-            }
-
-            this.scheduleItems.add(new ScheduleItem(dayOfWeek, name, id, time));
+            return cachedSchedule;
         }
+        else
+        {
+            Document page = this.downloadDocument(this.URL);
 
-        return this.scheduleItems;
+            Elements itemRows = page.select("table#series > tbody > tr.series_instance");
+
+            for (Element item : itemRows)
+            {
+                String name = item.select("span.seriesTitle").text().trim();
+                String id = item.attr("data-malid");
+
+                String weekday = item.select("td.weekday").text().trim();
+                DayOfWeek dayOfWeek = this.dayAbbrToEnum(weekday);
+
+                String timeString = item.select("td.time").text().trim();
+
+                LocalTime time;
+
+                try
+                {
+                    time = LocalTime.of(
+                            Integer.parseInt(timeString.split(":")[0]),
+                            Integer.parseInt(timeString.split(":")[1])
+                    );
+                } catch (NumberFormatException e)
+                {
+                    break;
+                }
+
+                this.scheduleItems.add(new ScheduleItem(dayOfWeek, name, id, time));
+            }
+
+            cachedSchedule = this.scheduleItems;
+            cacheTime = LocalTime.now();
+
+            return this.scheduleItems;
+        }
     }
 
     @Override

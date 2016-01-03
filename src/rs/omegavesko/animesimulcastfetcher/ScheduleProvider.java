@@ -1,3 +1,5 @@
+package rs.omegavesko.animesimulcastfetcher;
+
 import java.util.List;
 
 public interface ScheduleProvider

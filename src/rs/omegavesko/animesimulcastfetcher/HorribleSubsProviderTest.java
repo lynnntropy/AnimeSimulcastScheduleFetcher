@@ -1,16 +1,18 @@
+package rs.omegavesko.animesimulcastfetcher;
+
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class CrunchyrollProviderTest
+public class HorribleSubsProviderTest
 {
     @Test
     public void testGetItems() throws Exception
     {
-        CrunchyrollProvider crunchyrollProvider = new CrunchyrollProvider();
-        List<ScheduleItem> items = crunchyrollProvider.getItems();
+        HorribleSubsProvider horribleSubsProvider = new HorribleSubsProvider();
+        List<ScheduleItem> items = horribleSubsProvider.getItems();
 
         assertNotNull(items);
         assertTrue(items.size() > 0);
@@ -24,6 +26,5 @@ public class CrunchyrollProviderTest
 
             System.out.println(item.toString());
         }
-
     }
 }

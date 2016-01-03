@@ -1,3 +1,5 @@
+package rs.omegavesko.animesimulcastfetcher;
+
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
